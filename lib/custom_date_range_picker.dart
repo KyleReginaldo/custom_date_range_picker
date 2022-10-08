@@ -27,6 +27,9 @@ class CustomDateRangePicker extends StatefulWidget {
 
   final Function() onCancelClick;
 
+  final Widget? cancelBtn;
+  final Widget? doneBtn;
+
   const CustomDateRangePicker({
     Key? key,
     this.initialStartDate,
@@ -36,6 +39,8 @@ class CustomDateRangePicker extends StatefulWidget {
     required this.minimumDate,
     required this.maximumDate,
     required this.onCancelClick,
+    this.cancelBtn,
+    this.doneBtn,
   }) : super(key: key);
 
   @override
@@ -194,59 +199,51 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker>
                             left: 16, right: 16, bottom: 16, top: 8),
                         child: Row(
                           children: [
-                            Expanded(
-                              child: Container(
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(24.0)),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.6),
-                                      blurRadius: 8,
-                                      offset: const Offset(4, 4),
-                                    ),
-                                  ],
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: OutlinedButton(
-                                    style: ButtonStyle(
-                                      side: MaterialStateProperty.all(
-                                          BorderSide(
-                                              color: Theme.of(context)
-                                                  .primaryColor)),
-                                      shape: MaterialStateProperty.all(
-                                        const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(24.0)),
-                                        ),
+                            widget.cancelBtn != null
+                                ? Expanded(
+                                    child: Container(
+                                      height: 48,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(24.0)),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.6),
+                                            blurRadius: 8,
+                                            offset: const Offset(4, 4),
+                                          ),
+                                        ],
                                       ),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Theme.of(context).primaryColor),
-                                    ),
-                                    onPressed: () {
-                                      try {
-                                        widget.onCancelClick();
-                                        Navigator.pop(context);
-                                      } catch (_) {}
-                                    },
-                                    child: const Center(
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18,
-                                          color: Colors.white,
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: OutlinedButton(
+                                          style: ButtonStyle(
+                                            side: MaterialStateProperty.all(
+                                                BorderSide(
+                                                    color: Theme.of(context)
+                                                        .primaryColor)),
+                                            shape: MaterialStateProperty.all(
+                                              const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(24.0)),
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Theme.of(context)
+                                                        .primaryColor),
+                                          ),
+                                          onPressed: () {},
+                                          child:
+                                              Center(child: widget.cancelBtn),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
+                                  )
+                                : const SizedBox.shrink(),
+                            widget.cancelBtn != null
+                                ? const SizedBox(width: 16)
+                                : const SizedBox.shrink(),
                             Expanded(
                               child: Container(
                                 height: 48,
@@ -275,14 +272,16 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker>
                                         Navigator.pop(context);
                                       } catch (_) {}
                                     },
-                                    child: const Center(
-                                      child: Text(
-                                        'Apply',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 18,
-                                            color: Colors.white),
-                                      ),
+                                    child: Center(
+                                      child: widget.doneBtn ??
+                                          const Text(
+                                            'Done',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
                                     ),
                                   ),
                                 ),
@@ -328,6 +327,8 @@ void showCustomDateRangePicker(
   Color? backgroundColor,
   Color? primaryColor,
   String? fontFamily,
+  Widget? cancelBtn,
+  Widget? doneBtn,
 }) {
   FocusScope.of(context).requestFocus(FocusNode());
   showDialog<dynamic>(
@@ -340,6 +341,8 @@ void showCustomDateRangePicker(
       initialEndDate: endDate,
       onApplyClick: onApplyClick,
       onCancelClick: onCancelClick,
+      cancelBtn: cancelBtn,
+      doneBtn: doneBtn,
     ),
   );
 }

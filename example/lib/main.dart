@@ -97,6 +97,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 startDate = null;
               });
             },
+            cancelBtn: DropdownButton<String>(
+              dropdownColor: Colors.purple,
+              value: name,
+              items: names
+                  .map<DropdownMenuItem<String>>(
+                    (e) => DropdownMenuItem<String>(
+                      value: e,
+                      child: Text(
+                        e,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  name = value!;
+                });
+              },
+            ),
           );
         },
         tooltip: 'choose date Range',
@@ -104,4 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  List names = ['kyle', 'dale', 'jannray'];
+  String name = "kyle";
 }
