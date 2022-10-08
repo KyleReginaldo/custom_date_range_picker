@@ -1,6 +1,8 @@
-import 'package:custom_date_range_picker/custom_calendar.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:custom_date_range_picker/custom_calendar.dart';
 
 /// `CustomDateRangePicker({
 ///   Key? key,
@@ -29,18 +31,20 @@ class CustomDateRangePicker extends StatefulWidget {
 
   final Widget? cancelBtn;
   final Widget? doneBtn;
+  final Color? cancelClr;
 
   const CustomDateRangePicker({
     Key? key,
+    required this.minimumDate,
+    required this.maximumDate,
+    this.barrierDismissible = true,
     this.initialStartDate,
     this.initialEndDate,
     required this.onApplyClick,
-    this.barrierDismissible = true,
-    required this.minimumDate,
-    required this.maximumDate,
     required this.onCancelClick,
     this.cancelBtn,
     this.doneBtn,
+    this.cancelClr,
   }) : super(key: key);
 
   @override
@@ -219,9 +223,12 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker>
                                         child: OutlinedButton(
                                           style: ButtonStyle(
                                             side: MaterialStateProperty.all(
-                                                BorderSide(
-                                                    color: Theme.of(context)
-                                                        .primaryColor)),
+                                              BorderSide(
+                                                color: widget.cancelClr ??
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                              ),
+                                            ),
                                             shape: MaterialStateProperty.all(
                                               const RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
@@ -229,9 +236,14 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker>
                                               ),
                                             ),
                                             backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Theme.of(context)
-                                                        .primaryColor),
+                                                widget.cancelClr != null
+                                                    ? MaterialStateProperty.all(
+                                                        widget.cancelClr,
+                                                      )
+                                                    : MaterialStateProperty.all(
+                                                        Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
                                           ),
                                           onPressed: () {},
                                           child:
@@ -329,6 +341,7 @@ void showCustomDateRangePicker(
   String? fontFamily,
   Widget? cancelBtn,
   Widget? doneBtn,
+  Color? cancelClr,
 }) {
   FocusScope.of(context).requestFocus(FocusNode());
   showDialog<dynamic>(
@@ -343,6 +356,7 @@ void showCustomDateRangePicker(
       onCancelClick: onCancelClick,
       cancelBtn: cancelBtn,
       doneBtn: doneBtn,
+      cancelClr: cancelClr,
     ),
   );
 }

@@ -85,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             maximumDate: DateTime.now().add(const Duration(days: 30)),
             endDate: endDate,
             startDate: startDate,
+            cancelClr: Colors.white,
             onApplyClick: (start, end) {
               setState(() {
                 endDate = end;
@@ -106,10 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       value: e,
                       child: Text(
                         e,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: Colors.white,
+                          color: Colors.grey.shade700,
                         ),
                       ),
                     ),
